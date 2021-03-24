@@ -15,6 +15,68 @@ class BrainFuck:
 
         return contents
 
+    @staticmethod
+    def cleanup(string: str) -> str:
+        return "".join(filter(lambda x: x in ['.', ',', '[', ']', '<', '>', '+', '-'], string))
+
+    @staticmethod
+    def match_parentheses(string: str) -> dict:
+        pmap, pstack = [], {}
+
+        for i, c in enumerate(string):
+            if c == "[":
+                pstack.append(i)
+            elif c == "]":
+                if len(pstack) == 0:
+                    raise ValueError("An error occured!")
+                pmap[pstack.pop()] = i
+
+        if len(pstack) > 0:
+            raise ValueError("Unpaired brackets error!")
+
+        return pmap
+
+    def evaluate(self, code: str) -> None:
+        code = self.cleanup(list(code))
+        bracemap = self.match_parentheses(code)
+
+        cells = [0]
+        pointer = 0
+        cell_pointer = 0
+
+        while pointer < len(code):
+            command = code[pointer]
+
+            if cell_pointer == len(cells):
+                cells.append(0)
+
+            if command == ">":
+                cell_pointer += 1
+
+            if command == "<":
+                cell_pointer = 0 if cell_pointer <= 0 else cell_pointer - 1
+
+            if command == "+":
+                cells[cell_pointer] = cells[cell_pointer] + 1 if cells[cell_pointer] < 255 else 0
+
+            if command == "-":
+                cells[cell_pointer] = cells[cell_pointer] - 1 if cells[cell_pointer] > 0 else 255
+
+            if command == "[" and cells[cell_pointer] == 0:
+                pointer = bracemap[pointer]
+
+            if command == "]" and cells[cell_pointer] != 0:
+                pointer = bracemap[pointer]
+
+            if command == ".":
+                sys.stdout.write(chr(cells[cell_pointer]))
+
+            if command == ",":
+                print("Input of a single character needed.")
+                cells[pointer] = ord(input())
+            
+            pointer += 1
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -22,4 +84,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     bf = BrainFuck(sys.argv[1])
-    print(bf.eval())
+    bf.eval()
