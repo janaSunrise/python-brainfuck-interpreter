@@ -21,7 +21,7 @@ class BrainFuck:
 
     @staticmethod
     def match_parentheses(string: str) -> dict:
-        pmap, pstack = [], {}
+        pmap, pstack, start = {}, [], None
 
         for i, c in enumerate(string):
             if c == "[":
@@ -29,7 +29,11 @@ class BrainFuck:
             elif c == "]":
                 if len(pstack) == 0:
                     raise ValueError("An error occured!")
-                pmap[pstack.pop()] = i
+
+                start = pstack.pop()
+
+            pmap[start] = i
+            pmap[i] = start
 
         if len(pstack) > 0:
             raise ValueError("Unpaired brackets error!")
@@ -91,4 +95,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     bf = BrainFuck(sys.argv[1])
-    bf.eval()
+    bf.evaluate()

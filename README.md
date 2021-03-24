@@ -14,7 +14,7 @@ A simple and easy to use brainfuck interpreter written in python.
 from interpreter import BrainFuck
 
 bf = BrainFuck("<filename>")  # Optional
-bf.eval("Code here")
+bf.evaluate("Code here")
 ```
 
 ### Brainfuck examples:
