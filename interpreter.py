@@ -36,8 +36,15 @@ class BrainFuck:
 
         return pmap
 
-    def evaluate(self, code: str) -> None:
-        code = self.cleanup(list(code))
+    def evaluate(self, code: str = None) -> None:
+        if self.file_contents is None and code is None:
+            raise ValueError("Please enter code or filename [When initializing] to evaluate!")
+
+        if self.file_contents is not None:
+            code = self.cleanup(list(self.file_contents))
+        else:
+            code = self.cleanup(list(code))
+
         bracemap = self.match_parentheses(code)
 
         cells = [0]
