@@ -13,7 +13,7 @@ A simple and easy to use brainfuck interpreter written in python.
 ```py
 from interpreter import BrainFuck
 
-bf = BrainFuck()
+bf = BrainFuck("<filename>")  # Optional
 bf.eval("Code here")
 ```
 
