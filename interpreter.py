@@ -34,8 +34,8 @@ class BrainFuck:
 
                 start = pstack.pop()
 
-            pmap[start] = i
-            pmap[i] = start
+                pmap[start] = i
+                pmap[i] = start
 
         if len(pstack) > 0:
             raise ValueError("Unpaired brackets error!")
