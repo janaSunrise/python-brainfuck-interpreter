@@ -17,7 +17,9 @@ class BrainFuck:
 
     @staticmethod
     def cleanup(string: str) -> str:
-        return "".join(filter(lambda x: x in ['.', ',', '[', ']', '<', '>', '+', '-'], string))
+        return "".join(
+            filter(lambda x: x in [".", ",", "[", "]", "<", ">", "+", "-"], string)
+        )
 
     @staticmethod
     def match_parentheses(string: str) -> dict:
@@ -42,7 +44,9 @@ class BrainFuck:
 
     def evaluate(self, code: str = None) -> None:
         if self.file_contents is None and code is None:
-            raise ValueError("Please enter code or filename [When initializing] to evaluate!")
+            raise ValueError(
+                "Please enter code or filename [When initializing] to evaluate!"
+            )
 
         if self.file_contents is not None:
             code = self.cleanup(list(self.file_contents))
@@ -68,10 +72,14 @@ class BrainFuck:
                 cell_pointer = 0 if cell_pointer <= 0 else cell_pointer - 1
 
             if command == "+":
-                cells[cell_pointer] = cells[cell_pointer] + 1 if cells[cell_pointer] < 255 else 0
+                cells[cell_pointer] = (
+                    cells[cell_pointer] + 1 if cells[cell_pointer] < 255 else 0
+                )
 
             if command == "-":
-                cells[cell_pointer] = cells[cell_pointer] - 1 if cells[cell_pointer] > 0 else 255
+                cells[cell_pointer] = (
+                    cells[cell_pointer] - 1 if cells[cell_pointer] > 0 else 255
+                )
 
             if command == "[" and cells[cell_pointer] == 0:
                 pointer = bracemap[pointer]
@@ -85,7 +93,7 @@ class BrainFuck:
             if command == ",":
                 print("Input of a single character needed.")
                 cells[pointer] = ord(input())
-            
+
             pointer += 1
 
 
