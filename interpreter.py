@@ -1,4 +1,5 @@
 import sys
+import typing as t
 
 
 class BrainFuck:
@@ -10,7 +11,7 @@ class BrainFuck:
         return contents
 
     @staticmethod
-    def cleanup(string: str) -> str:
+    def remove_comments(string: str) -> str:
         return "".join(
             filter(
                 lambda x: x in [".", ",", "[", "]", "<", ">", "+", "-"],
@@ -19,9 +20,11 @@ class BrainFuck:
         )
 
     @staticmethod
-    def match_parentheses(string: str) -> dict:
+    def match_parentheses(string: t.Union[str, list]) -> dict:
+        # Initialize variables
         pmap, pstack, start = {}, [], None
 
+        # Ensure the brackets are paired.
         for i, c in enumerate(string):
             if c == "[":
                 pstack.append(i)
@@ -53,9 +56,9 @@ class BrainFuck:
         # File or code handling
         if filename is not None:
             file_contents = self.get_file_contents(filename)
-            code = self.cleanup(list(file_contents))
+            code = self.remove_comments(list(file_contents))
         else:
-            code = self.cleanup(list(code))
+            code = self.remove_comments(list(code))
 
         # Evaluation variables
         bracemap = self.match_parentheses(code)
@@ -103,9 +106,11 @@ class BrainFuck:
 
 
 if __name__ == "__main__":
+    # Args Handling
     if len(sys.argv) != 2:
         print("Usage: python interpreter.py <filename>.bf")
         sys.exit(1)
 
+    # Initialize and evaluate
     bf = BrainFuck()
     bf.evaluate(filename=sys.argv[1])
