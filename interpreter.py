@@ -96,7 +96,7 @@ class BrainFuck:
                 sys.stdout.write(chr(cells[cell_pointer]))
 
             if command == ",":
-                print("Input of a single character needed.")
+                print("Input of a single character needed: ", end="")
                 cells[pointer] = ord(input())
 
             pointer += 1
