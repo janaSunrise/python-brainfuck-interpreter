@@ -2,12 +2,6 @@ import sys
 
 
 class BrainFuck:
-    def __init__(self, filename: str = None) -> None:
-        if not filename:
-            self.file_contents = filename
-        else:
-            self.file_contents = self.get_file_contents(filename)
-
     @staticmethod
     def get_file_contents(filename: str) -> str:
         with open(filename, "r") as file:
@@ -18,7 +12,10 @@ class BrainFuck:
     @staticmethod
     def cleanup(string: str) -> str:
         return "".join(
-            filter(lambda x: x in [".", ",", "[", "]", "<", ">", "+", "-"], string)
+            filter(
+                lambda x: x in [".", ",", "[", "]", "<", ">", "+", "-"],
+                string
+            )
         )
 
     @staticmethod
@@ -42,23 +39,31 @@ class BrainFuck:
 
         return pmap
 
-    def evaluate(self, code: str = None) -> None:
-        if self.file_contents is None and code is None:
+    @staticmethod
+    def get_jump_pos(bracemap, pointer):
+        return bracemap[pointer]
+
+    def evaluate(self, code: str = None, filename: str = None) -> None:
+        # Error handling
+        if filename is None and code is None:
             raise ValueError(
-                "Please enter code or filename [When initializing] to evaluate!"
+                "Please enter code or filename to evaluate!"
             )
 
-        if self.file_contents is not None:
-            code = self.cleanup(list(self.file_contents))
+        # File or code handling
+        if filename is not None:
+            file_contents = self.get_file_contents(filename)
+            code = self.cleanup(list(file_contents))
         else:
             code = self.cleanup(list(code))
 
+        # Evaluation variables
         bracemap = self.match_parentheses(code)
 
         cells = [0]
-        pointer = 0
-        cell_pointer = 0
+        pointer, cell_pointer = 0, 0
 
+        # Main eval loop
         while pointer < len(code):
             command = code[pointer]
 
@@ -82,10 +87,10 @@ class BrainFuck:
                 )
 
             if command == "[" and cells[cell_pointer] == 0:
-                pointer = bracemap[pointer]
+                pointer = self.get_jump_pos(bracemap, pointer)
 
             if command == "]" and cells[cell_pointer] != 0:
-                pointer = bracemap[pointer]
+                pointer = self.get_jump_pos(bracemap, pointer)
 
             if command == ".":
                 sys.stdout.write(chr(cells[cell_pointer]))
@@ -102,5 +107,5 @@ if __name__ == "__main__":
         print("Usage: python interpreter.py <filename>.bf")
         sys.exit(1)
 
-    bf = BrainFuck(sys.argv[1])
-    bf.evaluate()
+    bf = BrainFuck()
+    bf.evaluate(filename=sys.argv[1])
