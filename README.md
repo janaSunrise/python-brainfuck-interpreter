@@ -58,3 +58,5 @@ bf.evaluate(file="<filename>")
 , | Like c getchar(). input 1 character.
 . | Like c putchar(). print 1 character to the console
 ```
+
+<div align="center">Made by Sunrit Jana with ❤️</div>
