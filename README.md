@@ -1,4 +1,4 @@
-## brainfuck-interpreter
+## Brainfuck interpreter in Python
 
 A simple and easy to use brainfuck interpreter written in python.
 
@@ -13,8 +13,14 @@ A simple and easy to use brainfuck interpreter written in python.
 ```py
 from interpreter import BrainFuck
 
-bf = BrainFuck("<filename>")  # Optional
-bf.evaluate("Code here")
+# Instantiate the Brainfuck code evaluation object.
+bf = BrainFuck()
+
+# To execute code
+bf.evaluate("Your brainfuck code here")
+
+# To execute from file
+bf.evaluate(file="<filename>")
 ```
 
 ### Brainfuck examples:
@@ -40,12 +46,15 @@ bf.evaluate("Code here")
 - Basic things
 
 ```
-> = increases memory pointer, or moves the pointer to the right 1 block.
-< = decreases memory pointer, or moves the pointer to the left 1 block.
-+ = increases value stored at the block pointed to by the memory pointer
-- = decreases value stored at the block pointed to by the memory pointer
-[ = like c while(cur_block_value != 0) loop.
-] = if block currently pointed to's value is not zero, jump back to [
-, = like c getchar(). input 1 character.
-. = like c putchar(). print 1 character to the console
+> | Increases memory pointer, or moves the pointer to the right 1 block.
+< | Decreases memory pointer, or moves the pointer to the left 1 block.
+
++ | Increases value stored at the block pointed to by the memory pointer
+- | Decreases value stored at the block pointed to by the memory pointer
+
+[ | Like c while(cur_block_value != 0) loop.
+] | If block currently pointed to's value is not zero, jump back to [
+
+, | Like c getchar(). input 1 character.
+. | Like c putchar(). print 1 character to the console
 ```
